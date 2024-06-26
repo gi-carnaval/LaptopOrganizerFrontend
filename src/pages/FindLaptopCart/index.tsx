@@ -1,44 +1,38 @@
-export default function FindLaptopCart() {
+import { Scanner } from "@yudiel/react-qr-scanner";
+import { useState } from "react";
+
+const defaultConstraints = {
+  facingMode: 'false',
+  width: { min: 640, ideal: 720, max: 1920 },
+  height: { min: 640, ideal: 720, max: 1080 },
+};
+
+const styles = {
+  container: {
+    margin: 'auto',
+  },
+};
+
+const FindLaptopCart = () => {
+  const [qrCodeResult, setQrCodeResult] = useState<string>()
+
   return (
     <>
-      <h1>Organizador de Notebook em Carrinhos - SENAI</h1>
-      <div id="video-container">
-        <video id="qr-video"></video>
-      </div>
-      <div className="cameraSelect">
-        <h3>Selecione a camera:</h3>
-        <select id="cam-list">
-          <option value="environment" selected>Environment Facing (default)</option>
-          <option value="user">User Facing</option>
-        </select>
-      </div>
-      <div className="resultContainer">
-        <span id="resultSpan"></span>
-        <span id="cartNumberResult"></span>
-      </div>
-      <div className="buttonContainer">
-        <button id="start-button">Iniciar</button>
-        <button id="stop-button">Parar</button>
-      </div>
-      <div className="inputCode">
-        <button
-          className="accordionButton"
-          id="accordionButton"
-        >
-          Ou insira o código manualmente clicando aqui
-          <span id="accordionArrow">▼</span>
-        </button>
-        <form id="laptopCodeInput">
-          <div className="labelInput">
-            <label className="laptopCode" htmlFor="laptopCode">Código do notebook:</label>
-            <input id="laptopCode" name="laptopCode" type="number" />
-          </div>
-          <div className="buttons">
-            <button type="submit">Verificar</button>
-            <button id="limparInput" type="reset">Limpar</button>
-          </div>
-        </form>
-      </div>
+      <h1 className='cartPageTitle'>Encontrar Carrinho do Notebook</h1>
+      <p className="infoText">
+        Escaneie o Código QR do Notebook para encontrar o carrinho a que ele pertence
+      </p>
+      <Scanner
+        onScan={(result) => setQrCodeResult(result[0].rawValue)}
+        scanDelay={300}
+        constraints={defaultConstraints}
+        styles={styles} />
+      <h2
+        className='showResultQrCode'>
+        {qrCodeResult?.substring(0, 7)}
+      </h2>
     </>
   )
 }
+
+export default FindLaptopCart;

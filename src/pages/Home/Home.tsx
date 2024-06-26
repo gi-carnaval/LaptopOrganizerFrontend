@@ -50,6 +50,7 @@ export default function Home() {
         })}
       </div>
       <Link to="addCartForm"><button>Adicionar novo carrinho</button></Link>
+      <Link to="notebooks"><button>Verificar carrinho do notebook</button></Link>
 
     </>
   ) : (

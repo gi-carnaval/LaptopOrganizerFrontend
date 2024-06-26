@@ -7,6 +7,7 @@ import {
 import Home from './pages/Home/Home';
 import Cart from './pages/Cart/Cart';
 import AddLaptop from './pages/Cart/AddLaptop';
+import FindLaptopCart from './pages/FindLaptopCart';
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/notebooks" element={<h1>Notebook</h1>}></Route>
+          <Route path="/notebooks" element={<FindLaptopCart />}></Route>
+          <Route path="/cart/:slug/addLaptop" element={<AddLaptop />}></Route>
           <Route path="/cart/:slug" element={<Cart />}></Route>
           <Route path="/cart/:slug/addLaptop" element={<AddLaptop />}></Route>
         </Routes>
