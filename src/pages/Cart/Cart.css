@@ -1,0 +1,42 @@
+.cartContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cartPage {
+  background: #4b4b4b;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 5rem 0;
+  width: 100%;
+}
+
+.laptops {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.laptopCode{
+  width: 100%;
+  font-size: 1.75rem;
+  border: solid 1.5px black;
+  padding: 0.5rem 1rem
+}
+
+.editLaptop{
+  font-size: 1.75rem;
+  border: solid 1.5px black;
+  padding: 0.5rem 1rem
+}
+
+.addLaptopButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addLaptopButton a {
+  text-decoration: none;
+}
