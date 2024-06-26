@@ -29,7 +29,7 @@ function AddLaptop() {
   const { slug } = useParams<{ slug: string }>();
 
   const [qrCodeResult, setQrCodeResult] = useState<string>()
-  const [currentCartOfLaptop, setCurrentCartOfLaptop] = useState<string | undefined>()
+  const [currentCartOfLaptop, setCurrentCartOfLaptop] = useState<string>()
   const [isUpdateLaptopCodeInCartModalOpen, setIsUpdateLaptopCodeInCartModalOpen] = useState(false);
 
   function handleOpenUpdateLaptopCodeInCartModal() {
@@ -39,65 +39,69 @@ function AddLaptop() {
     setIsUpdateLaptopCodeInCartModalOpen(false);
   }
 
-  const addLaptopCart = async (laptopCode: string, cartSlug: string) => {
-    const laptopCodeStringToNumber = parseInt(laptopCode.substring(0, 7))
-
-    try {
-      const addLaptop = await api.post('/laptop', {
-        laptopCode: laptopCodeStringToNumber,
-        cartSlug: cartSlug
-      })
-      console.log("Sucesso ao cadastrar laptop!", addLaptop)
-    } catch (e) {
-      handleLaptopError(e as AxiosError<AxiosErrorProps>);
-    }
-  }
-
-   const handleLaptopError = (error: AxiosError<AxiosErrorProps>) => {
-    const updateLaptopCart = confirm(error.response?.data.message)
-
-    const regex = /Carrinho \d+/
-    const cartName = error.response?.data.message.match(regex)
-    console.log("cartName: ", cartName)
-
-    if(cartName) {
-      setCurrentCartOfLaptop(cartName[0])
-      console.log("SETOU 65: ", currentCartOfLaptop)
-    }
-
-    if(updateLaptopCart) {
-      console.log("currentCartOfLaptop linha 69: ",currentCartOfLaptop)
-
-      if(!slug || !currentCartOfLaptop) {
-        return
-      }
-      const formattedSlug = formatSlug(slug)
-      if( currentCartOfLaptop === formattedSlug) {
-        console.log("Mesmo Carrinho")
-      } else {
-        console.log("Carrinho Diferente")
-        console.log("currentCartOfLaptop: ",currentCartOfLaptop)
-        console.log("formattedSlug: ", formattedSlug)
-        handleOpenUpdateLaptopCodeInCartModal()
-      }
-    }
-   }
-
-   const formatSlug = (slug: string) => {
-    return slug.replace(/^./, slug[0].toUpperCase()).replace("_", " ");
-  };
-
   useEffect(() => {
     if (qrCodeResult === undefined) {
       return;
     }
 
-    if(!slug){
+    if (!slug) {
       return
     }
 
     addLaptopCart(qrCodeResult, slug);
   }, [qrCodeResult, slug]);
+
+  const addLaptopCart = async (laptopCode: string, cartSlug: string) => {
+    const laptopCodeStringToNumber = substringAndParseInt(laptopCode)
+
+    try {
+      await api.post('/laptop', {
+        laptopCode: laptopCodeStringToNumber,
+        cartSlug: cartSlug
+      })
+      alert(`Notebook ${laptopCodeStringToNumber} adicionado com sucesso!`)
+    } catch (e) {
+      handleLaptopError(e as AxiosError<AxiosErrorProps>);
+    }
+  }
+
+  const substringAndParseInt = (laptopCodeString: string = "") => {
+    return parseInt(laptopCodeString.substring(0, 7))
+  }
+
+  const handleLaptopError = (error: AxiosError<AxiosErrorProps>) => {
+    const updateLaptopCart = confirm(error.response?.data.message)
+
+    const regex = /Carrinho \d+/
+    const cartName = error.response?.data.message.match(regex)
+
+    if (cartName) {
+      const cartNameString = cartName[0];
+      setCurrentCartOfLaptop(cartName[0])
+
+      if (updateLaptopCart) {
+        // console.log("currentCartOfLaptop linha 69: ",currentCartOfLaptop)
+
+        if (!slug || !cartNameString) {
+          return
+        }
+        const formattedSlug = formatSlug(slug)
+        if (cartNameString === formattedSlug) {
+          console.log("Mesmo Carrinho")
+        } else {
+          // console.log("Carrinho Diferente")
+          // console.log("currentCartOfLaptop: ",currentCartOfLaptop)
+          // console.log("formattedSlug: ", formattedSlug)
+          handleOpenUpdateLaptopCodeInCartModal()
+        }
+      }
+    }
+  }
+
+  const formatSlug = (slug: string) => {
+    return slug.replace(/^./, slug[0].toUpperCase()).replace("_", " ");
+  };
+
 
 
   return (
@@ -118,11 +122,15 @@ function AddLaptop() {
         className='showResultQrCode'>
         {qrCodeResult?.substring(0, 7)}
       </h2>
-      <UpdateLaptopCodeInCartModal
-        isOpen={isUpdateLaptopCodeInCartModalOpen}
-        onRequestClose={handleCloseUpdateLaptopCodeInCartModal}
-        laptopAndCart={{ laptopCode: qrCodeResult, cartSlug: slug }}
-      />
+      {
+        (qrCodeResult !== undefined || slug !== undefined) ? (
+          <UpdateLaptopCodeInCartModal
+            isOpen={isUpdateLaptopCodeInCartModalOpen}
+            onRequestClose={handleCloseUpdateLaptopCodeInCartModal}
+            laptopAndCart={{ laptopCode: substringAndParseInt(qrCodeResult), cartSlug: slug }}
+          />
+        ) : null
+      }
     </>
   )
 }

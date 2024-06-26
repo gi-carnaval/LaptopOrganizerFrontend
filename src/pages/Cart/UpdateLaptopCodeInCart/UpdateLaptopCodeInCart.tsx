@@ -1,17 +1,36 @@
 import Modal from 'react-modal';
 import './UpdateLaptopCodeInCartModal.css'
 import closeImg from '../../../assets/close.svg';
+import { api } from '../../../lib/axios';
 
 interface UpdateLaptopCodeInCartModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
     laptopAndCart?: {
-      laptopCode?: string,
-      cartSlug?: string
+        laptopCode?: number,
+        cartSlug?: string
     }
 }
 
 export function UpdateLaptopCodeInCartModal({ isOpen, onRequestClose, laptopAndCart }: UpdateLaptopCodeInCartModalProps) {
+
+    const updateLaptopCart = async (laptopCode?: number, cartSlug?: string) => {
+        try {
+            await api.put("/laptop", {
+                laptopCode: laptopCode,
+                newCartSlug: cartSlug
+            })
+            alert(`Notebook ${laptopCode} adicionado ao ${cartSlug}`)
+        } catch (error) {
+            console.log(error)
+            alert("Erro ao atualizar notebook em carrinho")
+        } finally {
+            onRequestClose()
+        }
+
+
+    }
+
     return (
         <Modal
             isOpen={isOpen}
@@ -28,12 +47,12 @@ export function UpdateLaptopCodeInCartModal({ isOpen, onRequestClose, laptopAndC
             </button>
 
             <div className='container'>
-              <p>{laptopAndCart && `Deseja mover o Notebook ${laptopAndCart.laptopCode?.substring(0, 7)} para o carrinho Atual?`}</p>
+                <p>{laptopAndCart && `Deseja mover o Notebook ${laptopAndCart.laptopCode} para o carrinho Atual?`}</p>
 
-              <div className='buttons'>
-                <button>Mover</button>
-                <button>Cancelar</button>
-              </div>
+                <div className='buttons'>
+                    <button onClick={() => updateLaptopCart(laptopAndCart?.laptopCode, laptopAndCart?.cartSlug)}>Mover</button>
+                    <button>Cancelar</button>
+                </div>
             </div>
         </Modal>
     );
