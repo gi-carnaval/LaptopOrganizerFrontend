@@ -3,7 +3,6 @@ import './Home.css';
 import { api } from '../../lib/axios';
 import { useEffect, useState } from 'react';
 import { Bounce, toast } from 'react-toastify';
-import { CiCirclePlus } from 'react-icons/ci';
 import { FaCirclePlus } from 'react-icons/fa6';
 import { SlMagnifier } from 'react-icons/sl';
 
