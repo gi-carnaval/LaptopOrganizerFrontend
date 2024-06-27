@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 import { api } from '../../lib/axios';
 import { useEffect, useState } from 'react';
+import { Bounce, toast } from 'react-toastify';
 
 export interface CartProps {
   id: string;
@@ -15,12 +16,24 @@ export interface CartProps {
 export default function Home() {
   const [carts, setCarts] = useState<CartProps[]>()
 
+  const notify = () => toast.error("Não foi possível carregar os notebooks", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Bounce,
+  });;
+
   async function fetchCarts() {
     try {
       const response = await api.get('carts')
       response && setCarts(response.data)
     } catch (err) {
-      alert("Não foi possível carregar os notebooks")
+      notify()
     }
   }
 

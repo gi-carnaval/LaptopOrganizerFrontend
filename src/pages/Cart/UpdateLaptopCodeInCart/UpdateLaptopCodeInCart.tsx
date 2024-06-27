@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import './UpdateLaptopCodeInCartModal.css'
 import closeImg from '../../../assets/close.svg';
 import { api } from '../../../lib/axios';
+import { Bounce, toast } from 'react-toastify';
 
 interface UpdateLaptopCodeInCartModalProps {
     isOpen: boolean;
@@ -14,15 +15,39 @@ interface UpdateLaptopCodeInCartModalProps {
 
 export function UpdateLaptopCodeInCartModal({ isOpen, onRequestClose, laptopAndCart }: UpdateLaptopCodeInCartModalProps) {
 
+    const successToast = (laptopCode: number, cartSlug: string) => toast.success(`Notebook ${laptopCode} adicionado ao ${cartSlug}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+    });
+
+    const errorToast = () => toast.success("Erro ao atualizar notebook em carrinho", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+    });
+
     const updateLaptopCart = async (laptopCode?: number, cartSlug?: string) => {
         try {
             await api.put("/laptop", {
                 laptopCode: laptopCode,
                 newCartSlug: cartSlug
             })
-            alert(`Notebook ${laptopCode} adicionado ao ${cartSlug}`)
+            cartSlug && laptopCode && successToast(laptopCode, cartSlug)
         } catch (error) {
-            alert("Erro ao atualizar notebook em carrinho")
+            errorToast()
         } finally {
             onRequestClose()
         }

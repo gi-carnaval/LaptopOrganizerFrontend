@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { UpdateLaptopCodeInCartModal } from '../UpdateLaptopCodeInCart/UpdateLaptopCodeInCart';
 import { axiosErrorHandler } from '../../../utils/axiosErrorHandler';
 import { substringAndParseInt } from '../../../utils/substringAndParseIntLaptopCode';
+import { Bounce, toast } from 'react-toastify';
 
 const defaultConstraints = {
   facingMode: 'false',
@@ -27,6 +28,18 @@ function AddLaptop() {
 
   const [qrCodeResult, setQrCodeResult] = useState<string>()
   const [isUpdateLaptopCodeInCartModalOpen, setIsUpdateLaptopCodeInCartModalOpen] = useState(false);
+
+  const notify = (laptopCode: number) => toast.success(`${laptopCode}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Bounce,
+  });
 
   function handleOpenUpdateLaptopCodeInCartModal() {
     setIsUpdateLaptopCodeInCartModalOpen(true);
@@ -55,7 +68,8 @@ function AddLaptop() {
         laptopCode: laptopCodeStringToNumber,
         cartSlug: cartSlug
       })
-      alert(`Notebook ${laptopCodeStringToNumber} adicionado com sucesso!`)
+
+      notify(laptopCodeStringToNumber)
     } catch (e) {
       const errorMessage = axiosErrorHandler(e)
       handleLaptopError(errorMessage);
