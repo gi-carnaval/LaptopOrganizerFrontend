@@ -50,6 +50,10 @@ export default function Cart() {
     setAxiosError(axiosError)
   }
 
+  const handleDelete = (laptop: number) => {
+    confirm(`Confirmar a exclusão do notebook ${laptop}`)
+  }
+
   useEffect(() => {
     if(slug) {
       fetchCarts(slug);
@@ -73,7 +77,7 @@ export default function Cart() {
             {laptops.map((laptop) => (
               <tr key={laptop.id}>
                 <td className="laptopCode">{laptop.laptopCode}</td>
-                <td className="editLaptop"><MdDelete /></td>
+                <td className="deleteLaptop" onClick={() => handleDelete(laptop.laptopCode)}><MdDelete /></td>
               </tr>
             ))}
           </tbody>

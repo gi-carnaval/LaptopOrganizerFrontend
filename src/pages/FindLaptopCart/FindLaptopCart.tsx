@@ -53,16 +53,24 @@ const FindLaptopCart = () => {
         scanDelay={300}
         constraints={defaultConstraints}
         styles={styles} />
-      <span
-        className='showResultQrCode'>
-        {`O Notebook 
+      {cartName ? (
+        <>
+          <span
+            className='showResultQrCode'>
+            {`O Notebook 
         ${qrCodeResult?.substring(0, 7)} pertence ao`}
 
-      </span>
-      <h2
-        className='showResultCartName'>
-        {cartName}
-      </h2>
+          </span>
+
+          <h2
+            className='showResultCartName'>
+            {cartName}
+          </h2>
+
+        </>
+
+      ) : null
+      }
     </>
   )
 }

@@ -2,6 +2,8 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  -webkit-appearance: none;
+  appearance: none;
 
   color-scheme: light dark;
   color: white;
@@ -17,15 +19,21 @@
   --cancel-button-bg-color: #bf0d00;
 }
 
+* {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 body {
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
+  padding-bottom: 55px;
   color: white;
-  -webkit-appearance: none; /* Remove default Webkit styling */
-  appearance: none; /* Remove default styling */
+  align-items: flex-start;
 }
 
 h1 {
@@ -63,9 +71,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
