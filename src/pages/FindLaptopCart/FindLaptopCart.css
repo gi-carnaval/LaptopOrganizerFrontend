@@ -17,3 +17,8 @@
   font-weight: 700;
   background: #ff0000
 }
+
+.selectADevice {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}

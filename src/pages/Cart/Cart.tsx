@@ -8,6 +8,7 @@ import laptopRepository from "../../repositories/laptopRepository";
 import { AxiosResponse } from "axios";
 import { IGetLaptops } from "../../types/laptop";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { api } from "../../lib/axios";
 
 export interface Laptop {
   id: string;
@@ -51,10 +52,22 @@ export default function Cart() {
     setAxiosError(axiosError)
   }
 
-  const handleDelete = (laptop: number) => {
+  const handleDelete = async (laptop: number) => {
     const password = prompt("escreva aqui")
     if (password == "#Senai794*") {
-      confirm(`Confirmar a exclusão do notebook ${laptop}`)
+      const confirmDelete = confirm(`Confirmar a exclusão do notebook ${laptop}`)
+
+      if(confirmDelete){
+        try {
+          await api.delete("/laptop", {
+            data: {
+              laptopCode: laptop
+            }
+          })
+        } catch (error) {
+          handleAxiosError(error)
+        }
+      }
     } else {
       alert("Senha incorreta")
     }

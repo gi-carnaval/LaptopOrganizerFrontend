@@ -1,4 +1,4 @@
-import { Scanner } from "@yudiel/react-qr-scanner";
+import { Scanner, useDevices } from "@yudiel/react-qr-scanner";
 import { useEffect, useState } from "react";
 import { substringAndParseInt } from "../../utils/substringAndParseIntLaptopCode";
 import { api } from "../../lib/axios";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
 const defaultConstraints = {
-  facingMode: 'false',
+  facingMode: 'enviroment',
   width: { min: 640, ideal: 720, max: 1920 },
   height: { min: 640, ideal: 720, max: 1080 },
 };
@@ -23,6 +23,9 @@ const styles = {
 const FindLaptopCart = () => {
   const [qrCodeResult, setQrCodeResult] = useState<string>()
   const [cartName, setCartName] = useState<string>()
+  const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
+
+  const devices = useDevices();
 
   const navigate = useNavigate()
 
@@ -69,10 +72,20 @@ const FindLaptopCart = () => {
       <p className="infoText">
         Escaneie o Código QR do Notebook para encontrar o carrinho a que ele pertence
       </p>
+      <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
+        <option value={undefined}>Select a device</option>
+        {devices.map((device, index) => (
+          <option key={index} value={device.deviceId}>
+            {device.label}
+          </option>
+        ))}
+      </select>
       <Scanner
         onScan={(result) => setQrCodeResult(result[0].rawValue)}
         scanDelay={300}
-        constraints={defaultConstraints}
+        constraints={{
+          deviceId: deviceId
+        }}
         styles={styles} />
       {cartName ? (
         <>
