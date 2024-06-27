@@ -8,12 +8,6 @@ import { Bounce, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
-const defaultConstraints = {
-  facingMode: 'enviroment',
-  width: { min: 640, ideal: 720, max: 1920 },
-  height: { min: 640, ideal: 720, max: 1080 },
-};
-
 const styles = {
   container: {
     margin: 'auto',

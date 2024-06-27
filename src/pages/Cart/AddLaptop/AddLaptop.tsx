@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './AddLaptop.css';
 
-import { Scanner } from '@yudiel/react-qr-scanner';
+import { Scanner, useDevices } from '@yudiel/react-qr-scanner';
 import { api } from '../../../lib/axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UpdateLaptopCodeInCartModal } from '../UpdateLaptopCodeInCart/UpdateLaptopCodeInCart';
@@ -10,11 +10,6 @@ import { substringAndParseInt } from '../../../utils/substringAndParseIntLaptopC
 import { Bounce, toast } from 'react-toastify';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 
-const defaultConstraints = {
-  facingMode: 'false',
-  width: { min: 640, ideal: 720, max: 1920 },
-  height: { min: 640, ideal: 720, max: 1080 },
-};
 
 const styles = {
   container: {
@@ -30,6 +25,10 @@ function AddLaptop() {
   const [qrCodeResult, setQrCodeResult] = useState<string>()
   const [isUpdateLaptopCodeInCartModalOpen, setIsUpdateLaptopCodeInCartModalOpen] = useState(false);
   const navigate = useNavigate()
+
+  const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
+
+  const devices = useDevices();
 
   const laptopAddedToast = (laptopCode: number) => toast.success(`${laptopCode}`, {
     position: "top-right",
@@ -146,10 +145,20 @@ function AddLaptop() {
           {` ${slug?.replace(/^./, slug[0].toUpperCase()).replace("_", " ")}`}
         </span>
       </p>
+      <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
+        <option value={undefined}>Select a device</option>
+        {devices.map((device, index) => (
+          <option key={index} value={device.deviceId}>
+            {device.label}
+          </option>
+        ))}
+      </select>
       <Scanner
         onScan={(result) => setQrCodeResult(result[0].rawValue)}
         scanDelay={300}
-        constraints={defaultConstraints}
+        constraints={{
+          deviceId: deviceId
+        }}
         styles={styles} />
       <h2
         className='showResultQrCode'>
