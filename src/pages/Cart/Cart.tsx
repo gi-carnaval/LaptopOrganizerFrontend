@@ -36,7 +36,7 @@ export default function Cart() {
   }
 
   const handleLaptopResponse = (response: AxiosResponse<IGetLaptops>) => {
-    if(response && Array.isArray(response.data.value)) {
+    if (response && Array.isArray(response.data.value)) {
       const laptops = response.data.value
       setLaptops(laptops)
 
@@ -52,11 +52,17 @@ export default function Cart() {
   }
 
   const handleDelete = (laptop: number) => {
-    confirm(`Confirmar a exclusão do notebook ${laptop}`)
+    const password = prompt("escreva aqui")
+    if (password == "#Senai794*") {
+      confirm(`Confirmar a exclusão do notebook ${laptop}`)
+    } else {
+      alert("Senha incorreta")
+    }
   }
 
+
   useEffect(() => {
-    if(slug) {
+    if (slug) {
       fetchCarts(slug);
     }
   }, [slug]);
