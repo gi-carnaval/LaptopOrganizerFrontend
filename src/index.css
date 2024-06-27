@@ -14,8 +14,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --add-button-bg-color: #6eae00;
   --confirm-button-bg-color: #0063FF;
-  --confirm-button-bg-color-border: #0063FF;
   --cancel-button-bg-color: #bf0d00;
 }
 

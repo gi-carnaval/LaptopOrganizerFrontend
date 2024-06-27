@@ -3,6 +3,9 @@ import './Home.css';
 import { api } from '../../lib/axios';
 import { useEffect, useState } from 'react';
 import { Bounce, toast } from 'react-toastify';
+import { CiCirclePlus } from 'react-icons/ci';
+import { FaCirclePlus } from 'react-icons/fa6';
+import { SlMagnifier } from 'react-icons/sl';
 
 export interface CartProps {
   id: string;
@@ -63,14 +66,16 @@ export default function Home() {
         })}
       </div>
       <div className="footerButtons">
-        <Link to="/carrinho/adicionar-carrinho"><button className="addCart" >Adicionar novo carrinho</button></Link>
-        <Link to="notebooks"><button className="" >Verificar carrinho do notebook</button></Link>
+        <Link to="/carrinho/adicionar-carrinho"><button className="addCart" ><FaCirclePlus />Adicionar novo carrinho</button></Link>
+        <Link to="notebooks"><button className="verifyLaptop" ><SlMagnifier />
+        Verificar carrinho do notebook</button></Link>
       </div>
     </>
   ) : (
     <div>
       <h3>Carrinhos não encontrados</h3>
-      <Link to="/carrinho/adicionar-carrinho"><button className="addCart">Adicionar novo carrinho</button></Link>
+      <Link to="/carrinho/adicionar-carrinho"><button className="addCart"><FaCirclePlus />
+        Adicionar novo carrinho</button></Link>
     </div>
   )
 }

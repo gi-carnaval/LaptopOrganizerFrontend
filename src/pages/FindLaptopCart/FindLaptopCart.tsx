@@ -66,14 +66,6 @@ const FindLaptopCart = () => {
       <p className="infoText">
         Escaneie o Código QR do Notebook para encontrar o carrinho a que ele pertence
       </p>
-      <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
-        <option value={undefined}>Select a device</option>
-        {devices.map((device, index) => (
-          <option key={index} value={device.deviceId}>
-            {device.label}
-          </option>
-        ))}
-      </select>
       <Scanner
         onScan={(result) => setQrCodeResult(result[0].rawValue)}
         scanDelay={300}
@@ -81,6 +73,18 @@ const FindLaptopCart = () => {
           deviceId: deviceId
         }}
         styles={styles} />
+      {
+        devices ? (
+          <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
+            <option value={undefined}>Select a device</option>
+            {devices.map((device, index) => (
+              <option key={index} value={device.deviceId}>
+                {device.label}
+              </option>
+            ))}
+          </select>
+        ) : null
+      }
       {cartName ? (
         <>
           <span

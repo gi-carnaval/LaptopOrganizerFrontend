@@ -17,6 +17,8 @@ form{
 }
 
 .inputButton {
+  background: var(--add-button-bg-color);
+  color: white;
   font-size: 1.25rem;
   padding: 1rem;
   border-radius: 0.5rem;

@@ -25,7 +25,7 @@ function AddLaptop() {
   const navigate = useNavigate()
 
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
-  
+
   const devices = useDevices();
 
   const laptopAddedToast = (laptopCode: number) => toast.success(`${laptopCode}`, {
@@ -143,14 +143,6 @@ function AddLaptop() {
           {` ${slug?.replace(/^./, slug[0].toUpperCase()).replace("_", " ")}`}
         </span>
       </p>
-      <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
-        <option value={undefined}>Select a device</option>
-        {devices.map((device, index) => (
-          <option key={index} value={device.deviceId}>
-            {device.label}
-          </option>
-        ))}
-      </select>
       <Scanner
         onScan={(result) => setQrCodeResult(result[0].rawValue)}
         scanDelay={300}
@@ -158,6 +150,18 @@ function AddLaptop() {
           deviceId: deviceId
         }}
         styles={styles} />
+      {
+        devices ? (
+          <select className="selectADevice" onChange={(e) => setDeviceId(e.target.value)}>
+            <option value={undefined}>Select a device</option>
+            {devices.map((device, index) => (
+              <option key={index} value={device.deviceId}>
+                {device.label}
+              </option>
+            ))}
+          </select>
+        ) : null
+      }
       <h2
         className='showResultQrCode'>
         {qrCodeResult?.substring(0, 7)}

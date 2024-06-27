@@ -62,8 +62,16 @@ main {
 }
 
 .footerButtons button {
-  width: 80%;
+  width: 95%;
   border: none;
+
+}
+
+.footerButtons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .footerButtons button:hover {
@@ -80,6 +88,18 @@ main {
   border: none;
 }
 
-.addCart {
+.verifyLaptop {
   background: #0067bf;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.addCart {
+  background: #6eae00;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
