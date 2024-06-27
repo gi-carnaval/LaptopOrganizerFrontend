@@ -56,6 +56,7 @@ const FindLaptopCart = () => {
     } catch (e) {
       const errorMessage = axiosErrorHandler(e)
       laptopNotFound(errorMessage)
+      setCartName("")
     }
   }
 
