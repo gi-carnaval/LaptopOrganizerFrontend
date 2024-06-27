@@ -3,11 +3,12 @@ import './AddLaptop.css';
 
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { api } from '../../../lib/axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UpdateLaptopCodeInCartModal } from '../UpdateLaptopCodeInCart/UpdateLaptopCodeInCart';
 import { axiosErrorHandler } from '../../../utils/axiosErrorHandler';
 import { substringAndParseInt } from '../../../utils/substringAndParseIntLaptopCode';
 import { Bounce, toast } from 'react-toastify';
+import { RiArrowGoBackFill } from 'react-icons/ri';
 
 const defaultConstraints = {
   facingMode: 'false',
@@ -28,8 +29,33 @@ function AddLaptop() {
 
   const [qrCodeResult, setQrCodeResult] = useState<string>()
   const [isUpdateLaptopCodeInCartModalOpen, setIsUpdateLaptopCodeInCartModalOpen] = useState(false);
+  const navigate = useNavigate()
 
-  const notify = (laptopCode: number) => toast.success(`${laptopCode}`, {
+  const laptopAddedToast = (laptopCode: number) => toast.success(`${laptopCode}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Bounce,
+  });
+
+  const laptopAlreadyRegistredAtSameCartToast = (erro: string) => toast.info(`${erro}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Bounce,
+  });
+
+  const laptopAlreadyRegistredInAnotherCartToast = (erro: string) => toast.info(`${erro}`, {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -69,7 +95,7 @@ function AddLaptop() {
         cartSlug: cartSlug
       })
 
-      notify(laptopCodeStringToNumber)
+      laptopAddedToast(laptopCodeStringToNumber)
     } catch (e) {
       const errorMessage = axiosErrorHandler(e)
       handleLaptopError(errorMessage);
@@ -77,7 +103,6 @@ function AddLaptop() {
   }
 
   const handleLaptopError = (error: string) => {
-    const updateLaptopCart = confirm(error)
 
     const regex = /Carrinho \d+/
     const cartName = error.match(regex)
@@ -85,17 +110,21 @@ function AddLaptop() {
     if (cartName) {
       const cartNameString = cartName[0];
 
-      if (updateLaptopCart) {
-        if (!slug || !cartNameString) {
-          return
-        }
-        const formattedSlug = formatSlug(slug)
-        if (cartNameString === formattedSlug) {
-          console.error("Mesmo Carrinho")
-        } else {
-          handleOpenUpdateLaptopCodeInCartModal()
-        }
+
+
+      if (!slug || !cartNameString) {
+        return
       }
+      const formattedSlug = formatSlug(slug)
+      if (cartNameString === formattedSlug) {
+        laptopAlreadyRegistredAtSameCartToast(error)
+        console.error("Mesmo Carrinho")
+      } else {
+        laptopAlreadyRegistredInAnotherCartToast(error)
+        handleOpenUpdateLaptopCodeInCartModal()
+      }
+
+
     }
   }
 
@@ -107,6 +136,9 @@ function AddLaptop() {
 
   return (
     <>
+      <header className="headerBackButton">
+        <button onClick={() => navigate("..", { relative: "path" })}><RiArrowGoBackFill /> Voltar</button>
+      </header>
       <h1 className='cartPageTitle'>{slug?.replace(/^./, slug[0].toUpperCase()).replace("_", " ")}</h1>
       <p className="infoText">
         Escaneie o Código QR do Notebook para adicioná-lo ao

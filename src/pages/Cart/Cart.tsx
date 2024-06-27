@@ -7,6 +7,7 @@ import { axiosErrorHandler } from "../../utils/axiosErrorHandler";
 import laptopRepository from "../../repositories/laptopRepository";
 import { AxiosResponse } from "axios";
 import { IGetLaptops } from "../../types/laptop";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 export interface Laptop {
   id: string;
@@ -62,6 +63,9 @@ export default function Cart() {
 
   return (
     <div className="cartContainer">
+      <header className="headerBackButton">
+        <button onClick={() => navigate("/")}><RiArrowGoBackFill /> Voltar</button>
+      </header>
       <h1>{cartName}</h1>
       <button className="addLaptopButton" onClick={() => navigate(`./adicionar-notebook`)}>
         <CiCirclePlus style={{ fontSize: "2rem" }} />

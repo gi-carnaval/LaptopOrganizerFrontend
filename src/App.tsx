@@ -18,15 +18,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <div className="teste">
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/notebooks" element={<FindLaptopCart />}></Route>
-          <Route path="/carrinho/:slug/adicionar-notebook" element={<AddLaptop />}></Route>
-          <Route path="/carrinho/:slug" element={<Cart />}></Route>
-          <Route path="/carrinho/adicionar-carrinho" element={<AddCartForm />}></Route>
-        </Routes>
-      </div>
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/notebooks" element={<FindLaptopCart />}></Route>
+            <Route path="/carrinho/:slug/adicionar-notebook" element={<AddLaptop />}></Route>
+            <Route path="/carrinho/:slug" element={<Cart />}></Route>
+            <Route path="/carrinho/adicionar-carrinho" element={<AddCartForm />}></Route>
+          </Routes>
+        </div>
         <nav>
           <Link to="/"><IoHome /> Home</Link>
         </nav>
