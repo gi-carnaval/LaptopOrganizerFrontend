@@ -1,5 +1,5 @@
 .react-modal-overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
 
   position: fixed;
   top: 0;
@@ -12,26 +12,22 @@
   justify-content: center;
 }
 .react-modal-content {
-  width: 100%;
+  width: 80%;
   max-width: 576px;
   background: #6c6e71;
-  padding: 3rem;
+  padding: 1.25rem;
   position: relative;
   border-radius: 0.24rem;
 }
 
 .react-modal-close {
   position: absolute;
-  right: 1.5rem;
-  top: 1.5rem;
+  right: 1rem;
+  top: 1rem;
   border: 0;
   background: transparent;
 
   transition: filter(0.2s);
-
-  &:hover{
-      filter: brightness(0.6);
-  }
 }
 
 .container {
@@ -47,5 +43,22 @@
 
 .container .buttons{
   display: flex;
-  
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.buttons .cancelButton {
+  background: #bf0d00
+}
+
+.buttons .cancelButton:hover {
+  border: #4f0404
+}
+
+.buttons .moveButton {
+  background: var(--confirm-button-bg-color)
+}
+
+.buttons .cancelButton:hover {
+  border: #4f0404
 }

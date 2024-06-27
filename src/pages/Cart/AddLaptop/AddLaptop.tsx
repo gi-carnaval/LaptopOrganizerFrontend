@@ -4,12 +4,9 @@ import './AddLaptop.css';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { api } from '../../../lib/axios';
 import { useParams } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import { UpdateLaptopCodeInCartModal } from '../UpdateLaptopCodeInCart/UpdateLaptopCodeInCart';
-
-interface AxiosErrorProps {
-  message: string
-}
+import { axiosErrorHandler } from '../../../utils/axiosErrorHandler';
+import { substringAndParseInt } from '../../../utils/substringAndParseIntLaptopCode';
 
 const defaultConstraints = {
   facingMode: 'false',
@@ -29,7 +26,6 @@ function AddLaptop() {
   const { slug } = useParams<{ slug: string }>();
 
   const [qrCodeResult, setQrCodeResult] = useState<string>()
-  const [currentCartOfLaptop, setCurrentCartOfLaptop] = useState<string>()
   const [isUpdateLaptopCodeInCartModalOpen, setIsUpdateLaptopCodeInCartModalOpen] = useState(false);
 
   function handleOpenUpdateLaptopCodeInCartModal() {
@@ -61,37 +57,28 @@ function AddLaptop() {
       })
       alert(`Notebook ${laptopCodeStringToNumber} adicionado com sucesso!`)
     } catch (e) {
-      handleLaptopError(e as AxiosError<AxiosErrorProps>);
+      const errorMessage = axiosErrorHandler(e)
+      handleLaptopError(errorMessage);
     }
   }
 
-  const substringAndParseInt = (laptopCodeString: string = "") => {
-    return parseInt(laptopCodeString.substring(0, 7))
-  }
-
-  const handleLaptopError = (error: AxiosError<AxiosErrorProps>) => {
-    const updateLaptopCart = confirm(error.response?.data.message)
+  const handleLaptopError = (error: string) => {
+    const updateLaptopCart = confirm(error)
 
     const regex = /Carrinho \d+/
-    const cartName = error.response?.data.message.match(regex)
+    const cartName = error.match(regex)
 
     if (cartName) {
       const cartNameString = cartName[0];
-      setCurrentCartOfLaptop(cartName[0])
 
       if (updateLaptopCart) {
-        // console.log("currentCartOfLaptop linha 69: ",currentCartOfLaptop)
-
         if (!slug || !cartNameString) {
           return
         }
         const formattedSlug = formatSlug(slug)
         if (cartNameString === formattedSlug) {
-          console.log("Mesmo Carrinho")
+          console.error("Mesmo Carrinho")
         } else {
-          // console.log("Carrinho Diferente")
-          // console.log("currentCartOfLaptop: ",currentCartOfLaptop)
-          // console.log("formattedSlug: ", formattedSlug)
           handleOpenUpdateLaptopCodeInCartModal()
         }
       }

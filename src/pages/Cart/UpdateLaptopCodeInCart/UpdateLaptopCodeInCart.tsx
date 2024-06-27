@@ -22,13 +22,10 @@ export function UpdateLaptopCodeInCartModal({ isOpen, onRequestClose, laptopAndC
             })
             alert(`Notebook ${laptopCode} adicionado ao ${cartSlug}`)
         } catch (error) {
-            console.log(error)
             alert("Erro ao atualizar notebook em carrinho")
         } finally {
             onRequestClose()
         }
-
-
     }
 
     return (
@@ -50,8 +47,8 @@ export function UpdateLaptopCodeInCartModal({ isOpen, onRequestClose, laptopAndC
                 <p>{laptopAndCart && `Deseja mover o Notebook ${laptopAndCart.laptopCode} para o carrinho Atual?`}</p>
 
                 <div className='buttons'>
-                    <button onClick={() => updateLaptopCart(laptopAndCart?.laptopCode, laptopAndCart?.cartSlug)}>Mover</button>
-                    <button>Cancelar</button>
+                    <button onClick={() => updateLaptopCart(laptopAndCart?.laptopCode, laptopAndCart?.cartSlug)} className="moveButton">Mover</button>
+                    <button onClick={() => onRequestClose()} className="cancelButton">Cancelar</button>
                 </div>
             </div>
         </Modal>

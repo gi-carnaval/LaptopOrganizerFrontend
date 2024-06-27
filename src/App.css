@@ -41,3 +41,22 @@
 .read-the-docs {
   color: #888;
 }
+
+nav{
+  background: #454545;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0px;
+  width: 100vw;
+  height: 50px;
+  border-radius: 1rem 1rem 0 0;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+}

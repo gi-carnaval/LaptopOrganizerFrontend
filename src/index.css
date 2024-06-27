@@ -11,6 +11,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --confirm-button-bg-color: #0063FF;
+  --confirm-button-bg-color-border: #0063FF;
+  --cancel-button-bg-color: #bf0d00;
 }
 
 body {
@@ -18,7 +22,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: calc(100vh-50px);
 }
 
 h1 {
@@ -28,7 +32,7 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: none;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -37,9 +41,15 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  filter: brightness(1.1)
 }
+
+button:active {
+  transform: scale(0.975)
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

@@ -1,0 +1,20 @@
+.showResultCartName {
+
+}
+.cartPageTitle{
+  font-size: 2.5rem
+}
+.showResultQrCode {
+  font-size: 2rem;
+}
+
+.infoText {
+  display: block;
+}
+
+.showResultCartName {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  background: #ff0000
+}
