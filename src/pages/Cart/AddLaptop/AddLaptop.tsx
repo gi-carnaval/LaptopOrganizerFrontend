@@ -17,8 +17,6 @@ const styles = {
   },
 };
 
-
-
 function AddLaptop() {
   const { slug } = useParams<{ slug: string }>();
 
@@ -27,7 +25,7 @@ function AddLaptop() {
   const navigate = useNavigate()
 
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
-
+  
   const devices = useDevices();
 
   const laptopAddedToast = (laptopCode: number) => toast.success(`${laptopCode}`, {

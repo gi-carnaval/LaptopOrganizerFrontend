@@ -53,7 +53,7 @@ export default function Cart() {
   }
 
   const handleDelete = async (laptop: number) => {
-    const password = prompt("escreva aqui")
+    const password = prompt("Insira a senha de admin")
     if (password == "#Senai794*") {
       const confirmDelete = confirm(`Confirmar a exclusão do notebook ${laptop}`)
 
