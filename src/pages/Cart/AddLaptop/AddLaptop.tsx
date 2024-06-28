@@ -10,7 +10,6 @@ import { substringAndParseInt } from '../../../utils/substringAndParseIntLaptopC
 import { Bounce, toast } from 'react-toastify';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 
-
 const styles = {
   container: {
     margin: 'auto',
@@ -64,6 +63,19 @@ function AddLaptop() {
     transition: Bounce,
   });
 
+  const passwordIncorrect = (erro: string) => toast.error(`${erro}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    transition: Bounce,
+  });
+
+
   function handleOpenUpdateLaptopCodeInCartModal() {
     setIsUpdateLaptopCodeInCartModalOpen(true);
   }
@@ -71,7 +83,33 @@ function AddLaptop() {
     setIsUpdateLaptopCodeInCartModalOpen(false);
   }
 
+  const passwordRequire = async () => {
+    const sessionPassword = sessionStorage.getItem('adminPassword');
+
+    if (sessionPassword) {
+      return
+    }
+    const password = prompt("Digite a senha de admin para poder incluir notebooks")
+
+    if (!password) {
+      return
+    }
+
+    try {
+      const response = await api.put('/auth', { password });
+      if (response.status === 200) {
+        sessionStorage.setItem('adminPassword', password);
+      }
+    } catch (err) {
+      const errorMessage = axiosErrorHandler(err)
+      passwordIncorrect(errorMessage)
+    }
+  }
+
   useEffect(() => {
+
+    passwordRequire()
+
     if (qrCodeResult === undefined) {
       return;
     }
@@ -85,11 +123,13 @@ function AddLaptop() {
 
   const addLaptopCart = async (laptopCode: string, cartSlug: string) => {
     const laptopCodeStringToNumber = substringAndParseInt(laptopCode)
+    const sessionPassword = sessionStorage.getItem('adminPassword');
 
     try {
       await api.post('/laptop', {
         laptopCode: laptopCodeStringToNumber,
-        cartSlug: cartSlug
+        cartSlug: cartSlug,
+        password: sessionPassword
       })
 
       laptopAddedToast(laptopCodeStringToNumber)
@@ -106,8 +146,6 @@ function AddLaptop() {
 
     if (cartName) {
       const cartNameString = cartName[0];
-
-
 
       if (!slug || !cartNameString) {
         return
@@ -129,7 +167,12 @@ function AddLaptop() {
     return slug.replace(/^./, slug[0].toUpperCase()).replace("_", " ");
   };
 
-
+  useEffect(() => {
+    const password = sessionStorage.getItem('adminPassword');
+    if (!password) {
+      navigate("..", { relative: "path" })
+    }
+  }, [navigate]);
 
   return (
     <>

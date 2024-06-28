@@ -54,23 +54,25 @@ export default function Cart() {
 
   const handleDelete = async (laptop: number) => {
     const password = prompt("Insira a senha de admin")
-    if (password == "#Senai794*") {
-      const confirmDelete = confirm(`Confirmar a exclusão do notebook ${laptop}`)
 
-      if(confirmDelete){
-        try {
-          await api.delete("/laptop", {
-            data: {
-              laptopCode: laptop
-            }
-          })
-        } catch (error) {
-          handleAxiosError(error)
+    const confirmDelete = confirm(`Confirmar a exclusão do notebook ${laptop}`)
+
+    if (confirmDelete) {
+      try {
+        await api.delete("/laptop", {
+          data: {
+            laptopCode: laptop,
+            password: password
+          }
+        })
+        if (slug) {
+          fetchCarts(slug);
         }
+      } catch (error) {
+        handleAxiosError(error)
       }
-    } else {
-      alert("Senha incorreta")
     }
+
   }
 
 
