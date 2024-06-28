@@ -18,6 +18,11 @@ const FindLaptopCart = () => {
   const [qrCodeResult, setQrCodeResult] = useState<string>()
   const [cartName, setCartName] = useState<string>()
   const [deviceId, setDeviceId] = useState<string | undefined>(undefined);
+  const [isRotated, setIsRotated] = useState(false);
+
+  const toggleRotation = () => {
+    setIsRotated(!isRotated);
+  };
 
   const devices = useDevices();
 
@@ -58,7 +63,7 @@ const FindLaptopCart = () => {
   }
 
   return (
-    <>
+    <div className={`container ${isRotated ? 'rotated' : ''}`}>
       <header className="headerBackButton">
         <button onClick={() => navigate("..", { relative: "path" })}><RiArrowGoBackFill /> Voltar</button>
       </header>
@@ -85,25 +90,27 @@ const FindLaptopCart = () => {
           </select>
         ) : null
       }
-      {cartName ? (
-        <>
-          <span
-            className='showResultQrCode'>
-            {`O Notebook 
+      {
+        cartName ? (
+          <>
+            <span
+              className='showResultQrCode'>
+              {`O Notebook 
         ${qrCodeResult?.substring(0, 7)} pertence ao`}
 
-          </span>
+            </span>
 
-          <h2
-            className='showResultCartName'>
-            {cartName}
-          </h2>
+            <h2
+              className='showResultCartName'>
+              {cartName}
+            </h2>
 
-        </>
+          </>
 
-      ) : null
+        ) : null
       }
-    </>
+      <button onClick={() => toggleRotation()}>Virar tela</button>
+    </div >
   )
 }
 
