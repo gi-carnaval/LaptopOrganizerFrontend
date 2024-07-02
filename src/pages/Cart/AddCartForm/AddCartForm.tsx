@@ -20,11 +20,17 @@ function AddCartForm() {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+
+    const password = prompt("Insira a senha de admin")
+
+    if(!password) return
+
     try {
       await api.post('/cart/', {
-        name: data.cartName
+        name: data.cartName,
+        password: password
       })
-      alert(`Carrinho ${data.cartName} adicionado`)
+      alert(`${data.cartName} adicionado`)
       navigate("/")
     } catch (err) {
       const axiosError = axiosErrorHandler(err)

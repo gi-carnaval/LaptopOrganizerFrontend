@@ -55,6 +55,8 @@ export default function Cart() {
   const handleDelete = async (laptop: number) => {
     const password = prompt("Insira a senha de admin")
 
+    if(!password) return
+
     const confirmDelete = confirm(`Confirmar a exclusão do notebook ${laptop}`)
 
     if (confirmDelete) {
@@ -72,7 +74,6 @@ export default function Cart() {
         handleAxiosError(error)
       }
     }
-
   }
 
 
